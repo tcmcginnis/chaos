@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kraken-network
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: kraken
+    spec:
+      serviceAccountName: useroot
+      volumes:
+      - name: config
+        configMap:
+          name: kube-config
+      containers:
+        - name: kraken-runtime
+          serviceAccount: useroot
+          image: quay.io/chaos-kubox/krkn-hub:network-chaos
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_NAME
+              value: ocp410-s7hlr-worker-xtwp5
+            - name: DURATION
+              value: "60"
+            - name: EXECUTION
+              value: serial
+            - name: EGRESS
+              value: "{loss: 60}"
+            - name: CERBERUS_ENABLED
+              value: "False"
+#            - name: CERBERUS_URL
+#              value: "http://cerberus-service.kraken-deploy.svc.cluster.local:8080"
+          volumeMounts:
+            - name: config
+              mountPath: /root/.kube
+          securityContext:
+            privileged: true
+      restartPolicy: Never

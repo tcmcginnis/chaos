@@ -1,0 +1,62 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kraken-node-reboot
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: kraken
+    spec:
+      serviceAccountName: useroot
+      volumes:
+      - name: config
+        configMap:
+          name: kube-config
+      containers:
+        - name: kraken-runtime
+          serviceAccount: useroot
+          image: quay.io/chaos-kubox/krkn-hub:node-scenarios
+          imagePullPolicy: IfNotPresent
+# The following node chaos scenarios are supported in "ACTION":
+
+# node_start_scenario			: Scenario to stop the node instance.
+# node_stop_scenario			: Scenario to stop the node instance.
+# node_stop_start_scenario		: Scenario to stop and then start the node instance. Not supported on VMware.
+# node_termination_scenario		: Scenario to terminate the node instance.
+# node_reboot_scenario			: Scenario to reboot the node instance.
+# stop_kubelet_scenario			: Scenario to stop the kubelet of the node instance.
+# stop_start_kubelet_scenario		: Scenario to stop and start the kubelet of the node instance.
+# node_crash_scenario			: Scenario to crash the node instance.
+# stop_start_helper_node_scenario	: Scenario to stop and start the helper node and check service status.
+          env:
+            - name: ACTION
+              value: node_reboot_scenario
+#            - name: NODE_NAME
+#              value: ocp410-s7hlr-worker-qpsc9
+            - name: LABEL_SELECTOR
+              value: "node-role.kubernetes.io/worker"
+            - name: INSTANCE_COUNT
+              value: "2"
+            - name: CLOUD_TYPE
+              value: "vmware"
+            - name: VSPHERE_IP
+              value: "10.100.59.48"
+            - name: VSPHERE_USERNAME
+              value: "redacted@vsphere.local"
+            - name: VSPHERE_PASSWORD
+              value: "redactedpassword"
+            - name: VERIFY_SESSION
+              value: "False"
+#            - name: SKIP_OPENSHIFT_CHECKS
+#              value: "True"
+            - name: CERBERUS_ENABLED
+              value: "False"
+#            - name: CERBERUS_URL
+#              value: "http://cerberus-service.kraken-deploy.svc.cluster.local:8080"
+          volumeMounts:
+            - name: config
+              mountPath: /root/.kube
+          securityContext:
+            privileged: true
+      restartPolicy: Never

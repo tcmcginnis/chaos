@@ -1,0 +1,33 @@
+# running "node_start_scenario" When node is powered off
+2022-09-14 15:05:55,502 [INFO] Node with instance ID: ocp410-s7hlr-worker-qpsc9 is in running state
+2022-09-14 15:05:55,503 [INFO] node_start_scenario has been successfully injected!
+2022-09-14 15:05:55,526 [INFO] {
+	"output_id": "success",
+	"output_data": {
+		"nodes": {
+			"1663167955502662222": {
+				"name": "ocp410-s7hlr-worker-qpsc9"
+			}
+		},
+		"action": "Start"
+	}
+}
+
+2022-09-14 15:05:55,528 [INFO] 
+2022-09-14 15:05:55,528 [INFO] Successfully finished running Kraken. UUID for the run: f74954f6-c29e-4a29-914c-90c2a76e36b1. Report generated at /root/kraken/kraken.report. Exiting
+
+# running "node_start_scenario" When node is already powered up
+2022-09-14 15:08:45,679 [INFO] Starting kraken
+2022-09-14 15:08:45,688 [INFO] Initializing client to talk to the Kubernetes cluster
+2022-09-14 15:08:55,434 [INFO] Fetching cluster info
+2022-09-14 15:08:55,556 [INFO] Cluster version is 4.10.22
+2022-09-14 15:08:55,557 [INFO] Server URL: https://api.ocp410.mclabs.us:6443
+2022-09-14 15:08:55,558 [INFO] Generated a uuid for the run: e36af54a-e829-40f9-b6ee-db4144acf454
+2022-09-14 15:08:55,558 [INFO] Daemon mode not enabled, will run through 1 iterations
+
+2022-09-14 15:08:55,559 [INFO] Executing scenarios for iteration 0
+2022-09-14 15:08:57,039 [INFO] Node with provided node_name does not exist or the node might be in NotReady state.
+2022-09-14 15:08:57,183 [ERROR] Error while running scenarios/node_scenario.yaml: Ready nodes with the provided label selector do not exist
+2022-09-14 15:08:57,310 [INFO] 
+2022-09-14 15:08:57,310 [ERROR] Post scenarios are still failing at the end of all iterations
+

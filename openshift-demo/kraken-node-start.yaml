@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kraken-node-start
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: kraken
+    spec:
+      serviceAccountName: useroot
+      volumes:
+      - name: config
+        configMap:
+          name: kube-config
+      containers:
+        - name: kraken-runtime
+          serviceAccount: useroot
+          image: quay.io/chaos-kubox/krkn-hub:node-scenarios
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ACTION
+              value: node_start_scenario
+            - name: NODE_NAME
+              value: ocp410-s7hlr-worker-kzxb4
+            - name: LABEL_SELECTOR
+              value: "node-role.kubernetes.io/worker"
+            - name: INSTANCE_COUNT
+              value: "1"
+            - name: CLOUD_TYPE
+              value: "vmware"
+            - name: VSPHERE_IP
+              value: "10.100.59.48"
+            - name: VSPHERE_USERNAME
+              value: "redacted@vsphere.local"
+            - name: VSPHERE_PASSWORD
+              value: "redactedpassword"
+            - name: VERIFY_SESSION
+              value: "False"
+            - name: SKIP_OPENSHIFT_CHECKS
+              value: "False"
+            - name: CERBERUS_ENABLED
+              value: "False"
+#            - name: CERBERUS_URL
+#              value: "http://cerberus-service.kraken-deploy.svc.cluster.local:8080"
+          volumeMounts:
+            - name: config
+              mountPath: /root/.kube
+          securityContext:
+            privileged: true
+      restartPolicy: Never
