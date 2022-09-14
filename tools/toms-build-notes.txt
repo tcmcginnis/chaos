@@ -1,0 +1,16 @@
+oc new-project kraken
+oc project kraken
+#oc create configmap kube-config --from-file=/root/.kube/kubeconfig.ocp4.10
+oc create configmap kube-config --from-file=/opt/kraken/openshift/config
+oc create configmap kraken-config --from-file=./config.yaml
+oc create configmap scenarios-config --from-file=/opt/kraken/scenarios
+
+oc create serviceaccount useroot
+oc adm policy add-scc-to-user privileged -z useroot
+
+
+oc create -f ./kraken.yml
+
+Warning: would violate PodSecurity "restricted:latest": privileged (container "kraken" must not set securityContext.privileged=true), allowPrivilegeEscalation != false (container "kraken" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "kraken" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "kraken" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "kraken" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+job.batch/kraken created
+

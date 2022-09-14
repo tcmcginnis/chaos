@@ -9,7 +9,7 @@ export CERBERUS_ENABLED=true
 
 podman rm $SCENARIO_NAME >/dev/null 2>&1
 
-podman run --name=$SCENARIO_NAME --net=host --env-host=true -v /root/.kube/config:/root/.kube/config:Z -d quay.io/chaos-kubox/krkn-hub:pod-scenarios
+podman run --name=$SCENARIO_NAME --net=host --env-host=true -v  /root/.kube/kubeconfig.ocp4.10:/root/.kube/config:Z -d quay.io/chaos-kubox/krkn-hub:pod-scenarios
 
 podman logs -f $SCENARIO_NAME # Streams Kraken logs
 

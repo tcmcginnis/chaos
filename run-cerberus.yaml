@@ -17,4 +17,3 @@
       env_host: true
 #      rm: true
 
-# See: https://docs.ansible.com/ansible/latest/collections/containers/podman/index.html
